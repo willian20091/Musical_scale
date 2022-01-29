@@ -33,6 +33,8 @@ python musical_scale.py
 
 You can also download the ZIP of the project and unzip it and proceed to step 2 as shown above
 
+![Zip](./img/zip.png)	
+
 The following features are currently available
 
 ### Help
