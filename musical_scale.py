@@ -6,6 +6,23 @@
 import sys, os 
 import itertools
 
+def title():
+    print(" __  __           _           _    _____           _       ")
+    print(" |  \/  |         (_)         | |  / ____|         | |     ")
+    print(" | \  / |_   _ ___ _  ___ __ _| | | (___   ___ __ _| | ___ ")
+    print(" | |\/| | | | / __| |/ __/ _` | |  \___ \ / __/ _` | |/ _ |")
+    print(" | |  | | |_| \__ \ | (_| (_| | |  ____) | (_| (_| | |  __/")
+    print(" |_|  |_|\__,_|___/_|\___\__,_|_| |_____/ \___\__,_|_|\___|\n")
+    print("Created by William Ferreira - 2022\n")
+
+def help():
+
+    print("Usage: musical_scale.py [-- Scale] [Note]")
+    print("     # Scales available: --major, --minor")
+    print("     # Notes available: C, D, E, F, G, A, B")
+    print("Example: musical_scale.py --major G\n")
+    sys.exit(1)
+
 def convertNoteToNumber(note_, number_ = False):
 
 	notes_numbers = {'C' : 0, 'D' : 2, 'E' : 4, 'F' : 5, 'G' : 7, 'A' : 9, 'B' : 11}
@@ -44,10 +61,9 @@ def convertNoteToNumber(note_, number_ = False):
 		else:
 			return None
 
-def generateScale(note, scale = 'major', return_numbers = False):
+def generateScale(note, scale, return_numbers = False):
 
     note = convertNoteToNumber(note)
-    print(note)
 
     notes = {
 		'sharps' : ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'],
@@ -55,14 +71,14 @@ def generateScale(note, scale = 'major', return_numbers = False):
 	};
 
     scales = {
-		'major' : [2, 2, 1, 2, 2, 2],
+		'--major' : [2, 2, 1, 2, 2, 2],
 		'blues' : [3, 2, 1, 1, 3],
 		'natural_minor' : [2, 1, 2, 2, 1, 2],
 		'harmonic_minor' : [2, 1, 2, 2, 1, 3],
 		'melodic_minor' : [2, 1, 2, 2, 2, 2, 1, -2, -2, -1, -2, -2, -1, -2]
 	}
 
-    if scales[scale] == scales['major']:
+    if scales[scale] == scales['--major']:
         if note in [1, 3, 5, 8, 10]:
             notes_array = notes['flats']
         else:
@@ -102,6 +118,8 @@ def generateScale(note, scale = 'major', return_numbers = False):
 
 def main():
 
+    title()
+
     try:
         args = sys.argv[1:]
         if not args:
@@ -110,13 +128,15 @@ def main():
 
         if args[0] in ["--menor"] and  args[1] in ["C", "D", "E", "F", "G", "A", "B"]:
             print("Escala de {} Menor".format(args[1]))
-            print(generateScale(args[1], args[0]))
+            #print(generateScale(args[1], args[0]))
             sys.exit(1)
         
-        elif args[0] in ["major"] and args[1] in ["C", "D", "E", "F", "G", "A", "B"]:
+        elif args[0] in ["--major"] and args[1] in ["C", "D", "E", "F", "G", "A", "B"]:
             print("Escala de {} Maior".format(args[1]))
             print(generateScale(args[1], args[0]))
             sys.exit(1)
+        elif args[0] in ["--help", "-h"]:
+            help()
         else:
             print("Informação inválida. Utilize o --help ou -h para maiores informações.")
             sys.exit(1)
