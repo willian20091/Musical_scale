@@ -14,7 +14,6 @@
 
 This program is designed to help students of music and music theory learn musical scales.
 
----	
 
 ## How To Use
 
@@ -39,7 +38,6 @@ python musical_scale.py [--help] or [-h]
 
 ![Help](./img/help.png)	
 
----	
 
 ### Major
 
@@ -53,7 +51,6 @@ python musical_scale.py [--major] [Note]
 
 ### Natural Minor
 
----	
 
 Generate the natural minor scale for the required note `C, D, E, F, G, A or B`
 
@@ -62,7 +59,6 @@ python musical_scale.py [--natural_minor] [Note]
 ```
 ![Help](./img/minor.png)	
 
----	
 
 ## Next Versions
 
@@ -72,6 +68,6 @@ python musical_scale.py [--natural_minor] [Note]
 - [ ] Harmonic Minor
 - [ ] Melodic Minor
 
----	
+#
 
 Made with 💜 at Willan Ferreira 
