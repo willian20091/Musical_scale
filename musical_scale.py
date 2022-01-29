@@ -1,26 +1,35 @@
 # -*- coding: utf-8 -*-
 #!/usr/bin/python
 # 2022 by Willian Ferreira
-# Reference: https://github.com/grimmdude/Scale-Generator/blob/master/scale_generator.py 
+# Version 0.1 Beta
+
+# Reference: 
+# https://github.com/grimmdude/Scale-Generator/blob/master/scale_generator.py 
+# https://www.descomplicandoamusica.com/escala-menor-natural/
+# https://www.descomplicandoamusica.com/escala-menor-melodica/ 
+# https://www.descomplicandoamusica.com/escala-menor-harmonica/
 
 import sys, os 
 import itertools
 
 def title():
-    print(" __  __           _           _    _____           _       ")
+    print("  __  __           _           _    _____           _      ")
     print(" |  \/  |         (_)         | |  / ____|         | |     ")
     print(" | \  / |_   _ ___ _  ___ __ _| | | (___   ___ __ _| | ___ ")
     print(" | |\/| | | | / __| |/ __/ _` | |  \___ \ / __/ _` | |/ _ |")
     print(" | |  | | |_| \__ \ | (_| (_| | |  ____) | (_| (_| | |  __/")
     print(" |_|  |_|\__,_|___/_|\___\__,_|_| |_____/ \___\__,_|_|\___|\n")
-    print("Created by William Ferreira - 2022\n")
+    print("Created by William Ferreira - 2022")
+    print("Version 0.1 Beta\n")
 
 def help():
 
     print("Usage: musical_scale.py [-- Scale] [Note]")
-    print("     # Scales available: --major, --minor")
-    print("     # Notes available: C, D, E, F, G, A, B")
-    print("Example: musical_scale.py --major G\n")
+    print("     # Scales available: --major, --natural_minor")
+    print("     # Notes available: C, D, E, F, G, A, B\n")
+    print("Example 1: musical_scale.py --major G")
+    print("Example 2: musical_scale.py --natural_minor B\n")
+
     sys.exit(1)
 
 def convertNoteToNumber(note_, number_ = False):
@@ -72,10 +81,9 @@ def generateScale(note, scale, return_numbers = False):
 
     scales = {
 		'--major' : [2, 2, 1, 2, 2, 2],
-		'blues' : [3, 2, 1, 1, 3],
-		'natural_minor' : [2, 1, 2, 2, 1, 2],
-		'harmonic_minor' : [2, 1, 2, 2, 1, 3],
-		'melodic_minor' : [2, 1, 2, 2, 2, 2, 1, -2, -2, -1, -2, -2, -1, -2]
+		'--natural_minor' : [2, 1, 2, 2, 1, 2],
+		#'--harmonic_minor' : [2, 1, 2, 2, 1, 3],
+		#'--melodic_minor' : [2, 1, 2, 2, 2, 2, 1, -2, -2, -1, -2, -2, -1, -2]
 	}
 
     if scales[scale] == scales['--major']:
@@ -126,9 +134,9 @@ def main():
             print("Você deve informar a nota a ser gerada a escala. Utilize o --help ou -h para maiores informações.")
             sys.exit(1)
 
-        if args[0] in ["--menor"] and  args[1] in ["C", "D", "E", "F", "G", "A", "B"]:
+        if args[0] in ["--natural_minor"] and  args[1] in ["C", "D", "E", "F", "G", "A", "B"]:
             print("Escala de {} Menor".format(args[1]))
-            #print(generateScale(args[1], args[0]))
+            print(generateScale(args[1], args[0]))
             sys.exit(1)
         
         elif args[0] in ["--major"] and args[1] in ["C", "D", "E", "F", "G", "A", "B"]:
