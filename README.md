@@ -20,14 +20,19 @@ This program is designed to help students of music and music theory learn musica
 In order to run the program you must download the repository as shown below.
 
 ```bash
-
+# step 1
 git clone https://github.com/willian20091/Musical_scale.git 
 
+# step 2
 cd Musical_scale
 
+# step 3
 python musical_scale.py
 
 ```
+
+You can also download the ZIP of the project and unzip it and proceed to step 2 as shown above
+
 The following features are currently available
 
 ### Help
