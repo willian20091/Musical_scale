@@ -2,6 +2,7 @@
 
 
 * [About](#about) 
+* [Requirements](#requirements)
 * [How To Use](#how-to-use)
   * [Help](#help)
   * [Major](#major)
@@ -14,6 +15,13 @@
 
 This program is designed to help students of music and music theory learn musical scales.
 
+## Requirements
+
+To run this project it is necessary to have python installed. You can download it through [link](https://www.python.org/downloads/).
+
+[Git](https://git-scm.com/downloads) to download the repository from the command line.
+
+[7-Zip](https://www.7-zip.org/download.html) or derivatives if you are going to download the file through the browser.
 
 ## How To Use
 
