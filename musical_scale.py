@@ -3,13 +3,12 @@
 # 2022 by Willian Ferreira
 # Version 0.1 Beta
 
-# Reference: 
-# https://github.com/grimmdude/Scale-Generator/blob/master/scale_generator.py 
+# ç: 
 # https://www.descomplicandoamusica.com/escala-menor-natural/
 # https://www.descomplicandoamusica.com/escala-menor-melodica/ 
 # https://www.descomplicandoamusica.com/escala-menor-harmonica/
 
-import sys, os 
+import sys, os ß
 import itertools
 
 def title():
