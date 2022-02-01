@@ -3,13 +3,12 @@
 # 2022 by Willian Ferreira
 # Version 0.1 Beta
 
-# ç: 
+# Reference: 
 # https://www.descomplicandoamusica.com/escala-menor-natural/
 # https://www.descomplicandoamusica.com/escala-menor-melodica/ 
 # https://www.descomplicandoamusica.com/escala-menor-harmonica/
 
-import sys, os ß
-import itertools
+import sys
 
 def title():
     print("  __  __           _           _    _____           _      ")
