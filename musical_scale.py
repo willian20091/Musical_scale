@@ -80,8 +80,8 @@ def generateScale(note, scale, return_numbers = False):
     scales = {
 		'--major' : [2, 2, 1, 2, 2, 2],
 		'--natural_minor' : [2, 1, 2, 2, 1, 2],
-		'--harmonic_minor' : [2, 1, 2, 2, 1, 3],
-		'--melodic_minor' : [2, 1, 2, 2, 2, 2, 1, -2, -2, -1, -2, -2, -1, -2]
+		#'--harmonic_minor' : [2, 1, 2, 2, 1, 3],
+		#'--melodic_minor' : [2, 1, 2, 2, 2, 2, 1, -2, -2, -1, -2, -2, -1, -2]
 	}
 
     if scales[scale] == scales['--major']:
