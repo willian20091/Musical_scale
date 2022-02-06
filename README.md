@@ -79,7 +79,7 @@ python musical_scale.py [--natural_minor] [Note]
 
 - [x] Help
 - [x] Major
-- [x] Natural Monir
+- [x] Natural Minir
 - [ ] Harmonic Minor
 - [ ] Melodic Minor
 
