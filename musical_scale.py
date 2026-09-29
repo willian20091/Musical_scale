@@ -1,34 +1,76 @@
 # -*- coding: utf-8 -*-
 #!/usr/bin/python
 # 2022 by Willian Ferreira
-# Version 0.1 Beta
+# Version 0.2
 
 # Reference: 
 # https://www.descomplicandoamusica.com/escala-menor-natural/
 # https://www.descomplicandoamusica.com/escala-menor-melodica/ 
 # https://www.descomplicandoamusica.com/escala-menor-harmonica/
 
+import argparse
+import os
 import sys
 
-def title():
-    print("  __  __           _           _    _____           _      ")
-    print(" |  \/  |         (_)         | |  / ____|         | |     ")
-    print(" | \  / |_   _ ___ _  ___ __ _| | | (___   ___ __ _| | ___ ")
-    print(" | |\/| | | | / __| |/ __/ _` | |  \___ \ / __/ _` | |/ _ |")
-    print(" | |  | | |_| \__ \ | (_| (_| | |  ____) | (_| (_| | |  __/")
-    print(" |_|  |_|\__,_|___/_|\___\__,_|_| |_____/ \___\__,_|_|\___|\n")
-    print("Created by William Ferreira - 2022")
-    print("Version 0.1 Beta\n")
+VERSION = "0.2"
+NOTES = ("C", "D", "E", "F", "G", "A", "B")
+ANSI_COLORS = {
+    "bold": "\033[1m",
+    "cyan": "\033[36m",
+    "magenta": "\033[35m",
+    "yellow": "\033[33m",
+    "reset": "\033[0m",
+}
 
-def help():
 
-    print("Usage: musical_scale.py [-- Scale] [Note]")
-    print("     # Scales available: --major, --natural_minor")
-    print("     # Notes available: C, D, E, F, G, A, B\n")
-    print("Example 1: musical_scale.py --major G")
-    print("Example 2: musical_scale.py --natural_minor B\n")
+def build_parser():
+    parser = argparse.ArgumentParser(
+        description="Generate major and natural minor scales.",
+        epilog=(
+            "Examples:\n"
+            "  python musical_scale.py --scale major C\n"
+            "  python musical_scale.py --scale natural-minor C"
+        ),
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
+    scale_options = parser.add_mutually_exclusive_group()
+    scale_options.add_argument(
+        "--scale",
+        choices=("major", "natural-minor", "natural_minor"),
+        help="scale type",
+    )
+    scale_options.add_argument(
+        "--major", dest="scale", action="store_const", const="major",
+        help="shortcut for --scale major",
+    )
+    scale_options.add_argument(
+        "--natural-minor", "--natural_minor", dest="scale",
+        action="store_const", const="natural-minor",
+        help="shortcut for --scale natural-minor",
+    )
+    parser.add_argument(
+        "note", nargs="?", type=str.upper, choices=NOTES,
+        help="root note (C, D, E, F, G, A, or B)",
+    )
+    parser.add_argument(
+        "--version", action="version", version="%(prog)s " + VERSION
+    )
+    parser.add_argument(
+        "--color", choices=("auto", "always", "never"), default="auto",
+        help="color output: auto for terminals, always, or never",
+    )
+    return parser
 
-    sys.exit(1)
+
+def style(text, color, enabled, bold=False):
+    if not enabled:
+        return text
+
+    prefix = ANSI_COLORS[color]
+    if bold:
+        prefix = ANSI_COLORS["bold"] + prefix
+    return prefix + text + ANSI_COLORS["reset"]
+
 
 def convertNoteToNumber(note_, number_ = False):
 
@@ -122,33 +164,72 @@ def generateScale(note, scale, return_numbers = False):
 
     return return_scale
 
-def main():
 
-    title()
+def generateTriads(scale_notes):
+    chord_qualities = {
+        (4, 7): "",
+        (3, 7): "m",
+        (3, 6): "dim",
+    }
+    chords = []
 
-    try:
-        args = sys.argv[1:]
-        if not args:
-            print("You must inform the note to be generated in the scale.\n Use --help or -h for more information.")
-            sys.exit(1)
+    for degree, root_note in enumerate(scale_notes):
+        root_number = convertNoteToNumber(root_note)
+        third_number = convertNoteToNumber(scale_notes[(degree + 2) % 7])
+        fifth_number = convertNoteToNumber(scale_notes[(degree + 4) % 7])
+        intervals = (
+            (third_number - root_number) % 12,
+            (fifth_number - root_number) % 12,
+        )
+        chords.append(root_note + chord_qualities[intervals])
 
-        if args[0] in ["--natural_minor"] and  args[1] in ["C", "D", "E", "F", "G", "A", "B"]:
-            print("{} minor scale".format(args[1]))
-            print(generateScale(args[1], args[0]))
-            sys.exit(1)
-        
-        elif args[0] in ["--major"] and args[1] in ["C", "D", "E", "F", "G", "A", "B"]:
-            print("{} major scale".format(args[1]))
-            print(generateScale(args[1], args[0]))
-            sys.exit(1)
-        elif args[0] in ["--help", "-h"]:
-            help()
+    return chords
+
+
+def main(argv=None):
+    parser = build_parser()
+    args = parser.parse_args(argv)
+
+    if args.scale is None:
+        parser.error("specify a scale with --scale, --major, or --natural-minor")
+    if args.note is None:
+        parser.error("specify the root note")
+
+    scale_name = args.scale.replace("_", "-")
+    scale_key = "--major" if scale_name == "major" else "--natural_minor"
+    scale_notes = generateScale(args.note, scale_key)
+    scale_chords = generateTriads(scale_notes)
+    label = "major" if scale_name == "major" else "natural minor"
+    formula = "W-W-H-W-W-W-H" if scale_name == "major" else "W-H-W-W-H-W-W"
+    color_enabled = args.color == "always" or (
+        args.color == "auto"
+        and sys.stdout.isatty()
+        and "NO_COLOR" not in os.environ
+    )
+    scale_color = "cyan" if scale_name == "major" else "magenta"
+    colored_chords = []
+    for chord in scale_chords:
+        if chord.endswith("dim"):
+            chord_color = "yellow"
+        elif chord.endswith("m"):
+            chord_color = "magenta"
         else:
-            print("Invalid information. Use --help or -h for more information.")
-            sys.exit(1)
-    except Exception as e:
-        print("Unexpected error identified. Please contact the administrator. Error: {}".format(e))
-        sys.exit(1)
+            chord_color = "cyan"
+        colored_chords.append(style(chord, chord_color, color_enabled, bold=True))
+
+    print(style("MUSICAL SCALE", "bold", color_enabled))
+    print(style("{} {} scale".format(args.note, label), scale_color, color_enabled, bold=True))
+    print("Intervals (W=whole tone, H=semitone): {}".format(
+        style(formula, scale_color, color_enabled)
+    ))
+    print("Notes:     " + style(" - ".join(scale_notes), scale_color, color_enabled))
+    print("Chords:    " + " - ".join(colored_chords))
+    print("Legend:    {} major | {} minor | {} diminished".format(
+        style("cyan", "cyan", color_enabled),
+        style("magenta", "magenta", color_enabled),
+        style("yellow", "yellow", color_enabled),
+    ))
+    return 0
     
 if __name__ == '__main__':
-	main()
+    sys.exit(main())
